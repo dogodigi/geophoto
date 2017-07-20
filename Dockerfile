@@ -19,6 +19,8 @@ RUN npm install .
 
 COPY config-docker.json /geophoto/config/config.json
 
+VOLUME /geophoto/data
+
 COPY start.sh /start.sh
 RUN chmod 755 /*.sh
 EXPOSE 8080
