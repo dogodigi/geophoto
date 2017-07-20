@@ -1,8 +1,8 @@
 // Initialize our namespace
 document.addEventListener("DOMContentLoaded", function(){
-  console.log('ready!');
+  var geotagger;
+  var map;
   map = L.map('result-map').setView([0,0],1);
-  //.setView([17.996149160906516,-76.74013888888888],14);
   var markers = L.markerClusterGroup();
   L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
@@ -60,6 +60,41 @@ document.addEventListener("DOMContentLoaded", function(){
                         '</div>' +
                       '</div>' +
                     '</div>';
+                    var sourceLatLng = layer.getLatLng();
+                    var targetLatLng = {
+                      lat: parseFloat(sourceLatLng.lat) + parseFloat(0.0005),
+                      lng: sourceLatLng.lng
+                    };
+                    var points = {
+                      type: 'Feature',
+                      properties: {
+                        angle: 45
+                      },
+                      geometry: {
+                        type: 'GeometryCollection',
+                        geometries: [
+                          {
+                            type: 'Point',
+                            coordinates: [sourceLatLng.lng, sourceLatLng.lat]
+                          },
+                          {
+                            type: 'Point',
+                            coordinates: [targetLatLng.lng, targetLatLng.lat]
+                          }
+                        ]
+                      }
+                    };
+                    if(geotagger){
+                      geotagger.setCameraAndTargetLatLng(sourceLatLng, targetLatLng);
+                      geotagger.setAngle(45);
+                    } else {
+                      geotagger = L.geotagPhoto.camera(points, {
+                        draggable: true
+                      }).addTo(map)
+                        .on('change', function (event) {
+                          var fieldOfView = this.getFieldOfView();
+                      });
+                    }
                   });
                 }
               });
