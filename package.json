@@ -1,0 +1,26 @@
+{
+  "name": "geophoto",
+  "version": "1.0.0",
+  "description": "Flickr downloader that then presents a map",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Milo van der Linden",
+    "email": "milo@edogodigi.net"
+  },
+  "private": true,
+  "license": "GPL-3.0",
+  "dependencies": {
+    "connect": "^3.2.0",
+    "async": "^2.4.1",
+    "cors": "^2.8.4",
+    "exif": "^0.6.0",
+    "flickrapi": "^0.6.0",
+    "serve-static": "^1.12.3",
+    "swagger-tools": "^0.10.1",
+    "underscore": "^1.8.3"
+  }
+}

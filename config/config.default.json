@@ -1,0 +1,38 @@
+{
+  "development": {
+    "flickr": {
+      "api_key": "yourflickrapikey",
+      "secret": "your flickr secret",
+      "user_id": "the flickr user id to fetch from",
+      "access_token": "flickr access token",
+      "access_token_secret": "flickr access token secret"
+    },
+    "people":[
+      "an array of user ids"
+    ]
+  },
+  "test": {
+    "flickr": {
+      "api_key": "yourflickrapikey",
+      "secret": "your flickr secret",
+      "user_id": "the flickr user id to fetch from",
+      "access_token": "flickr access token",
+      "access_token_secret": "flickr access token secret"
+    },
+    "people":[
+      "an array of user ids"
+    ]
+  },
+  "production": {
+    "flickr": {
+      "api_key": "yourflickrapikey",
+      "secret": "your flickr secret",
+      "user_id": "the flickr user id to fetch from",
+      "access_token": "flickr access token",
+      "access_token_secret": "flickr access token secret"
+    },
+    "people":[
+      "an array of user ids"
+    ]
+  }
+}

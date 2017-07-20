@@ -1,0 +1,75 @@
+---
+swagger: "2.0"
+info:
+  description: "This is the geophoto api"
+  version: "1.0.0"
+  title: "Geophoto-api"
+  contact:
+    name: "info@codefor.eu"
+  license:
+    name: "GPL-3.0"
+    url: "https://raw.githubusercontent.com/codeforeurope/geophoto/master/LICENSE"
+basePath: "/api"
+paths:
+  /photo/{collectionid}/{photoid}:
+    get:
+      tags:
+      - "photos"
+      summary: "Get photos"
+      description: "Get photos"
+      operationId: "getphoto"
+      parameters:
+      - name: "collectionid"
+        in: "path"
+        description: "id of the collection"
+        required: true
+        type: "string"
+      - name: "photoid"
+        in: "path"
+        description: "id of the photo"
+        required: true
+        type: "string"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Featurecollection of Geophotos"
+      x-swagger-router-controller: "Photo"
+  /photos/{id}:
+    get:
+      tags:
+      - "photos"
+      summary: "Get photos"
+      description: "Get photos"
+      operationId: "getphotos"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id of the collection"
+        required: true
+        type: "string"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Featurecollection of Geophotos"
+      x-swagger-router-controller: "Photo"
+  /collections:
+    get:
+      tags:
+      - "photos"
+      summary: "Get collections"
+      description: "Get collections"
+      operationId: "getcollections"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Array of collections"
+      x-swagger-router-controller: "Photo"
