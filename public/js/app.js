@@ -1,21 +1,19 @@
 // Initialize our namespace
 document.addEventListener("DOMContentLoaded", function(){
   console.log('ready!');
-  map = L.map('result-map').setView([17.996149160906516,-76.74013888888888],14);
+  map = L.map('result-map').setView([0,0],1);
+  //.setView([17.996149160906516,-76.74013888888888],14);
   var markers = L.markerClusterGroup();
   L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
-  // map.on("zoomend", function (e) {
-  //   console.log(map.getZoom());
-  //   console.log(map.getCenter());
-  // });
   markers.addTo(map);
   m.request({
       method: "GET",
       url: "/api/collections"
     }).then(function(data) {
+      var counter = data.length;
       data.forEach(function(item, i){
         m.request({
             method: "GET",
@@ -68,6 +66,9 @@ document.addEventListener("DOMContentLoaded", function(){
             }
           });
             markers.addLayer(geojson);
+            if ( counter === i+1){
+              map.fitBounds(markers.getBounds());
+            }
           }
         });
       });
