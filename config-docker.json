@@ -1,0 +1,38 @@
+{
+  "development": {
+    "flickr": {
+      "api_key": "__FLICKR_API_KEY__",
+      "secret": "__FLICKR_SECRET__",
+      "user_id": "__FLICKR_USER_ID__",
+      "access_token": "__FLICKR_ACCESS_TOKEN__",
+      "access_token_secret": "__FLICKR_ACCESS_TOKEN_SECRET__"
+    },
+    "people":[
+      "__FLICKR_USER_ID__"
+    ]
+  },
+  "test": {
+    "flickr": {
+      "api_key": "__FLICKR_API_KEY__",
+      "secret": "__FLICKR_SECRET__",
+      "user_id": "__FLICKR_USER_ID__",
+      "access_token": "__FLICKR_ACCESS_TOKEN__",
+      "access_token_secret": "__FLICKR_ACCESS_TOKEN_SECRET__"
+    },
+    "people":[
+      "__FLICKR_USER_ID__"
+    ]
+  },
+  "production": {
+    "flickr": {
+      "api_key": "__FLICKR_API_KEY__",
+      "secret": "__FLICKR_SECRET__",
+      "user_id": "__FLICKR_USER_ID__",
+      "access_token": "__FLICKR_ACCESS_TOKEN__",
+      "access_token_secret": "__FLICKR_ACCESS_TOKEN_SECRET__"
+    },
+    "people":[
+      "__FLICKR_USER_ID__"
+    ]
+  }
+}
