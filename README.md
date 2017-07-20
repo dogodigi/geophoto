@@ -1,4 +1,4 @@
-# geophoto
+# tagga
 
 Make a copy of /config/config.default.json named config.json (in the same directory)
 

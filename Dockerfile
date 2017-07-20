@@ -1,8 +1,8 @@
 FROM node:8
 
-# Create geophoto directory
-RUN mkdir /geophoto
-WORKDIR /geophoto
+# Create tagga directory
+RUN mkdir /tagga
+WORKDIR /tagga
 
 # Variables
 ENV NODE_ENV production
@@ -13,13 +13,13 @@ ENV FLICKR_ACCESS_TOKEN yourflickraccesstoken
 ENV FLICKR_ACCESS_TOKEN_SECRET yourflickraccesstokensecret
 
 # Install
-COPY . /geophoto
+COPY . /tagga
 
 RUN npm install .
 
-COPY config-docker.json /geophoto/config/config.json
+COPY config-docker.json /tagga/config/config.json
 
-VOLUME /geophoto/data
+VOLUME /tagga/data
 
 COPY start.sh /start.sh
 RUN chmod 755 /*.sh

@@ -1,7 +1,7 @@
 {
-  "name": "geophoto",
+  "name": "tagga",
   "version": "1.0.0",
-  "description": "Flickr downloader that then presents a map",
+  "description": "Flickr downloader that then presents a map on tagga.io",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

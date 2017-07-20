@@ -1,14 +1,14 @@
 ---
 swagger: "2.0"
 info:
-  description: "This is the geophoto api"
+  description: "This is the tagga api"
   version: "1.0.0"
-  title: "Geophoto-api"
+  title: "Tagga-api"
   contact:
     name: "info@codefor.eu"
   license:
     name: "GPL-3.0"
-    url: "https://raw.githubusercontent.com/codeforeurope/geophoto/master/LICENSE"
+    url: "https://raw.githubusercontent.com/codeforeurope/tagga/master/LICENSE"
 basePath: "/api"
 paths:
   /photo/{collectionid}/{photoid}:
@@ -35,7 +35,7 @@ paths:
       - "application/json"
       responses:
         200:
-          description: "Featurecollection of Geophotos"
+          description: "Featurecollection of photos"
       x-swagger-router-controller: "Photo"
   /photos/{id}:
     get:
@@ -56,7 +56,7 @@ paths:
       - "application/json"
       responses:
         200:
-          description: "Featurecollection of Geophotos"
+          description: "Featurecollection of photos"
       x-swagger-router-controller: "Photo"
   /collections:
     get:
