@@ -1,43 +1,13 @@
-.autocomplete-suggestions { border: 1px solid #ccc; background: #FFF; overflow: auto; border-radius: 0 0 3px 3px;}
-.autocomplete-suggestion { padding: calc(.625em - 1px); white-space: nowrap; overflow: hidden; color: #555; }
-.autocomplete-selected { background: #F0F0F0; }
-.autocomplete-suggestions strong { font-weight: bold; color: #555; }
-.autocomplete-group { padding: 8px 12px; }
-.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
-.message.is-info .message-header {
-    background-color: #3591c0;
-    color: #fff;
-}
-.message.is-info{
-  background-color: #fff;
-}
-.message.is-info .message-body {
-    border-color: #3591c0;
-    color: #4a4a4a;
-}
-
-.hero.is-primary {
-    background-color: #3591c0;
-    color: #fff;
-}
 .map { height: 500px; width: 100%; }
-
-.navbar-item{
-  padding-top: 3px;
-}
 .navbar,
-.navbar-item,
-.footer {
-  background-color: #3591c0;
-  color: #fff;
+.navbar-item {
+  background-color: #fff;
 }
 .button-footer {
   background-color: transparent;
   color: #fff;
 }
-.card-header-title {
-  font-weight: normal;
-}
+
 .white {
   color: #fff;
 }
@@ -46,4 +16,10 @@
 }
 .red {
   color: #ff0000;
+}
+
+.navbar {
+  -webkit-box-shadow: 0 8px 6px -6px #999;
+  -moz-box-shadow: 0 8px 6px -6px #999;
+  box-shadow: 0 8px 6px -6px #999;
 }

@@ -4,7 +4,7 @@ var Flickr = require("flickrapi"),
   url = require('url'),
   _ = require('underscore'),
   exif = require('../lib/exif'),
-  utils = require('../helpers/util'),
+  utils = require('../lib/util'),
   async = require('async');
 var request;
 var flickrOptions = {
@@ -76,6 +76,7 @@ module.exports.getphoto = function(req, res, next){
     loadPrivate: true
   });
   details = flickrData.photos[photoid];
+  var tags = [];
   var original = './data/' + collectionid + '/images/original/' + photoid + '.jpg';
   var exifdata = exif(original, function(exifErr, exifInfo){
     var exif;
@@ -98,6 +99,15 @@ module.exports.getphoto = function(req, res, next){
         }
       };
     }
+
+    if(details.tags.tag){
+      Object.keys(details.tags.tag).forEach(function(key,index) {
+        tags.push(details.tags.tag[index].raw);
+        // key: the name of the object key
+        // index: the ordinal position of the key within the object
+      });
+    }
+
     var final = {
       "id": details.id,
       "owner": {
@@ -110,8 +120,10 @@ module.exports.getphoto = function(req, res, next){
       "url": details.urls.url[0]._content,
       "exif": exif
     };
+    if(tags){
+      final.tags = tags;
+    }
     res.end(JSON.stringify(final, null, 2));
-
   });
 };
 module.exports.getcollections = function(req, res, next){

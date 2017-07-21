@@ -6,5 +6,4 @@ sed -i "s^__FLICKR_ACCESS_TOKEN__^$FLICKR_ACCESS_TOKEN^g" /tagga/config/config.j
 sed -i "s^__FLICKR_ACCESS_TOKEN_SECRET__^$FLICKR_ACCESS_TOKEN_SECRET^g" /tagga/config/config.json
 
 cd /tagga
-node download.js
 npm start

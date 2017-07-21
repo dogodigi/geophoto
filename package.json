@@ -14,13 +14,13 @@
   "private": true,
   "license": "GPL-3.0",
   "dependencies": {
-    "connect": "^3.2.0",
     "async": "^2.4.1",
+    "connect": "^3.2.0",
     "cors": "^2.8.4",
     "exif": "^0.6.0",
     "flickrapi": "^0.6.0",
+    "piexifjs": "^1.0.3",
     "serve-static": "^1.12.3",
-    "swagger-tools": "^0.10.1",
-    "underscore": "^1.8.3"
+    "swagger-tools": "^0.10.1"
   }
 }

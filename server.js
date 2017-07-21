@@ -13,8 +13,8 @@
         controllers: './controllers',
         useStubs: env === 'development' ? true : false // Conditionally turn on stubs (mock mode)
     };
-    app.use(cors()); //Allow Cross Origin Connections
 
+    app.use(cors()); //Allow Cross Origin Connections
     var spec = fs.readFileSync('./api/swagger.yaml', 'utf8');
     var swaggerDoc = jsyaml.safeLoad(spec);
 

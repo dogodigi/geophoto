@@ -1,7 +1,11 @@
 // Initialize our namespace
+var tagControl;
+var map;
 document.addEventListener("DOMContentLoaded", function(){
-  var geotagger;
-  var map;
+  init();
+});
+
+function init(){
   map = L.map('result-map').setView([0,0],1);
   var markers = L.markerClusterGroup();
   L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
@@ -33,68 +37,8 @@ document.addEventListener("DOMContentLoaded", function(){
                       method: "GET",
                       url: "/api/photo/" + data[i] + '/' + feature.properties.id
                   }).then(function(photodetail) {
-                    var flashmessage = photodetail.exif.camera.flash ? ' using flash. ': ' not using flash. ';
-                    var originalImage = photodetail.exif.image.width ? 'Original image ' + photodetail.exif.image.width + 'px width and ' + photodetail.exif.image.height + 'px height.' : '';
-                    var description = photodetail.description.trim().length > 2 ? '<p class="title is-4">' + photodetail.description + '</p>' : '';
-                    document.getElementById('click-result').innerHTML =
-                    '<div class="card">' +
-                      '<div class="card-image">' +
-                        '<figure class="image">' +
-                          '<img src="' + feature.properties.medium + '">' +
-                        '</figure>' +
-                      '</div>' +
-                      '<div class="card-content">' +
-                        '<div class="content">' +
-                           description +
-                          '<p class="title is-6"></p>' +
-                          '<p>Picture ' +
-                          '<a href="'+ photodetail.url + '">' + photodetail.title + '</a>' +
-                          ' taken on ' + photodetail.date + ' by ' +
-                          ' <a href="https://www.flickr.com/photos/'+ photodetail.owner.id + '">' + photodetail.owner.name + '</a>' +' with a ' +
-                            photodetail.exif.camera.model +
-                            ' with focal length of ' +
-                            photodetail.exif.camera.focallength +
-                            flashmessage +
-                            originalImage +
-                          '</p>' +
-                        '</div>' +
-                      '</div>' +
-                    '</div>';
-                    var sourceLatLng = layer.getLatLng();
-                    var targetLatLng = {
-                      lat: parseFloat(sourceLatLng.lat) + parseFloat(0.0005),
-                      lng: sourceLatLng.lng
-                    };
-                    var points = {
-                      type: 'Feature',
-                      properties: {
-                        angle: 45
-                      },
-                      geometry: {
-                        type: 'GeometryCollection',
-                        geometries: [
-                          {
-                            type: 'Point',
-                            coordinates: [sourceLatLng.lng, sourceLatLng.lat]
-                          },
-                          {
-                            type: 'Point',
-                            coordinates: [targetLatLng.lng, targetLatLng.lat]
-                          }
-                        ]
-                      }
-                    };
-                    if(geotagger){
-                      geotagger.setCameraAndTargetLatLng(sourceLatLng, targetLatLng);
-                      geotagger.setAngle(45);
-                    } else {
-                      geotagger = L.geotagPhoto.camera(points, {
-                        draggable: true
-                      }).addTo(map)
-                        .on('change', function (event) {
-                          var fieldOfView = this.getFieldOfView();
-                      });
-                    }
+                    showPhoto(feature, photodetail);
+                    //geotagger(layer, map);
                   });
                 }
               });
@@ -109,4 +53,110 @@ document.addEventListener("DOMContentLoaded", function(){
       });
     }
   );
-});
+}
+
+function showPhoto(feature, photodetail){
+  console.log(photodetail);
+  var flashmessage = photodetail.exif.camera.flash ? ' using flash. ': ' not using flash. ';
+  var originalImage = photodetail.exif.image.width ? 'Original image ' + photodetail.exif.image.width + 'px width and ' + photodetail.exif.image.height + 'px height.' : '';
+  var description = photodetail.description.trim().length > 2 ? m("p", {class: "title is-4"}, m.trust(photodetail.description) ) : '';
+  var tags;
+  if(photodetail.tags){
+    tags = [];
+    photodetail.tags.forEach(function(item, i){
+      tags.push(
+        m("span", {class: "tag is-light"}, photodetail.tags[i])
+      );
+    });
+  } else {
+    tags = '';
+  }
+  var root = document.body;
+  var card = m(photoCard, {
+    image: {
+      src: feature.properties.medium,
+      link: photodetail.url,
+      title: photodetail.title
+    },
+    owner:{
+      name: photodetail.owner.name,
+      link: 'https://www.flickr.com/photos/'+ photodetail.owner.id
+    },
+    camera: {
+      model: photodetail.exif.camera.model,
+      focallength: photodetail.exif.camera.focallength
+    },
+    description:  description,
+    flash: flashmessage,
+    original: originalImage,
+    date: photodetail.date,
+    tags: tags
+  });
+  m.render(document.getElementById('click-result'), card);
+}
+
+var photoCard = {
+  view: function(vnode){
+    return m("div", {class: "card"},[
+      m("div",{class: "card-image"},
+        m("figure", {class: "image"},
+          m("img", {src: vnode.attrs.image.src})
+        )
+      ),
+      m("div", {class: "card-content"},
+        m("div", {class: "content"}, [
+          vnode.attrs.description,
+          m("p", [
+            "Picture ",
+            m("a",{href: vnode.attrs.image.link}, m.trust(vnode.attrs.image.title)),
+            " taken on ", vnode.attrs.date, " by ",
+            m("a",{href: vnode.attrs.owner.link}, vnode.attrs.owner.name),
+            " with a ", vnode.attrs.camera.model,
+            " with a focal length of ", vnode.attrs.camera.focallength,
+            vnode.attrs.flash,
+            vnode.attrs.original
+          ]),
+          m("p", vnode.attrs.tags)
+        ])
+      )
+    ]);
+  }
+};
+
+function geotagger(layer, map){
+  var sourceLatLng = layer.getLatLng();
+  var targetLatLng = {
+    lat: parseFloat(sourceLatLng.lat) + parseFloat(0.0005),
+    lng: sourceLatLng.lng
+  };
+  var points = {
+    type: 'Feature',
+    properties: {
+      angle: 45
+    },
+    geometry: {
+      type: 'GeometryCollection',
+      geometries: [
+        {
+          type: 'Point',
+          coordinates: [sourceLatLng.lng, sourceLatLng.lat]
+        },
+        {
+          type: 'Point',
+          coordinates: [targetLatLng.lng, targetLatLng.lat]
+        }
+      ]
+    }
+  };
+  if(tagControl){
+    tagControl.setCameraAndTargetLatLng(sourceLatLng, targetLatLng);
+    tagControl.setAngle(45);
+  } else {
+    tagControl = L.geotagPhoto.camera(points, {
+      draggable: true
+    }).addTo(map)
+      .on('change', function (event) {
+        var fieldOfView = this.getFieldOfView();
+    });
+  }
+}
