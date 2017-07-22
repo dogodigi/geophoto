@@ -21,6 +21,7 @@
     "flickrapi": "^0.6.0",
     "piexifjs": "^1.0.3",
     "serve-static": "^1.12.3",
-    "swagger-tools": "^0.10.1"
+    "swagger-tools": "^0.10.1",
+    "underscore": "^1.8.3"
   }
 }
