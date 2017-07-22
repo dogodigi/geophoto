@@ -27,6 +27,25 @@ function getUrl(path){
     ( port == 80 || port == 443 ? '' : ':' + port ) + path +'/';
     return url;
 }
+function toGeoJSON(data){
+  var feature = {};
+  if(data.location.latitude && data.location.longitude){
+    var lat = data.location.latitude;
+    var lon = data.location.longitude;
+    //lon, lat, alt
+    feature = {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          lon,
+          lat
+        ]
+      }
+    };
+  }
+  return feature;
+}
 function parsePhoto(photo, callback){
   var properties = {
     id: photo,
@@ -35,36 +54,29 @@ function parsePhoto(photo, callback){
     original: getUrl(flickrData.dirstructure.images.original) + photo + '.jpg'
   };
   var original = flickrData.dirstructure.images.original + '/' + photo + '.jpg';
-  var exifdata = exif(original, function(exifErr, exifInfo){
+  //Is location information present? Prefer this over exif due to speed
+  if(flickrData.photos[photo].location && (flickrData.photos[photo].location.latitude) && flickrData.photos[photo].location.longitude) {
     var feature;
-    if (exifErr){
-      // TODO: At least log these errors
-      // don't care about exif errors - they are frequent with malformed files
-      feature = {type: "Feature", properties: properties};
-      //callback(exifErr, null);
-      callback();
-    } else {
-      if(Object.keys(exifInfo.feature).length !== 0){
-        feature = exifInfo.feature;
-        feature.properties = properties;
-        //feature.properties.exif = exifInfo.exif;
-        //feature.properties.exif = exifInfo;
-        callback(null, feature);
-      } else {
+    feature = toGeoJSON(flickrData.photos[photo]);
+    feature.properties = properties;
+    callback(null, feature);
+  } else {
+    var exifdata = exif(original, function(exifErr, exifInfo){
+      var feature;
+      if (exifErr){
+        feature = {type: "Feature", properties: properties};
         callback();
-        // callback(
-        //   {
-        //     Error: "No GPS data",
-        //     source: photo,
-        //     code: 'NO_EXIF_GPS'
-        //   },
-        //   null
-        // );
+      } else {
+        if(Object.keys(exifInfo.feature).length !== 0){
+          feature = exifInfo.feature;
+          feature.properties = properties;
+          callback(null, feature);
+        } else {
+          callback();
+        }
       }
-
-    }
-  });
-
+    });
+  }
 }
 module.exports.getphoto = function(req, res, next){
   var params = req.swagger.params;

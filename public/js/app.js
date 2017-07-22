@@ -56,16 +56,21 @@ function init(){
 }
 
 function showPhoto(feature, photodetail){
-  console.log(photodetail);
+  console.log(feature);
   var flashmessage = photodetail.exif.camera.flash ? ' using flash. ': ' not using flash. ';
   var originalImage = photodetail.exif.image.width ? 'Original image ' + photodetail.exif.image.width + 'px width and ' + photodetail.exif.image.height + 'px height.' : '';
   var description = photodetail.description.trim().length > 2 ? m("p", {class: "title is-4"}, m.trust(photodetail.description) ) : '';
+  var download = m("div", {class: 'level'}, m("div", {class: 'level-item has-text-centered'},
+    m("a", {class:"button", href: feature.properties.original, target: '_blank'},[
+      m("span",{class: "icon"}, m("i", {class:"fa fa-download"})),
+      m("span", "Download")
+    ])));
   var tags;
   if(photodetail.tags){
     tags = [];
     photodetail.tags.forEach(function(item, i){
       tags.push(
-        m("span", {class: "tag is-light"}, photodetail.tags[i])
+        m("div", {class: 'level-item has-text-centered'}, m("span", {class: "tag is-light"}, photodetail.tags[i]))
       );
     });
   } else {
@@ -90,7 +95,8 @@ function showPhoto(feature, photodetail){
     flash: flashmessage,
     original: originalImage,
     date: photodetail.date,
-    tags: tags
+    tags: tags,
+    download: download
   });
   m.render(document.getElementById('click-result'), card);
 }
@@ -106,6 +112,7 @@ var photoCard = {
       m("div", {class: "card-content"},
         m("div", {class: "content"}, [
           vnode.attrs.description,
+          m("hr"),
           m("p", [
             "Picture ",
             m("a",{href: vnode.attrs.image.link}, m.trust(vnode.attrs.image.title)),
@@ -116,7 +123,9 @@ var photoCard = {
             vnode.attrs.flash,
             vnode.attrs.original
           ]),
-          m("p", vnode.attrs.tags)
+          m("hr"),
+          m("div", {class: 'level'}, vnode.attrs.tags),
+          vnode.attrs.download
         ])
       )
     ]);
